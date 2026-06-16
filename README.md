@@ -92,15 +92,21 @@ Full per-tool documentation at `https://getvaletparking.com/mcp/docs`.
 
 ## Example transcripts
 
-Three example transcripts capture the canonical first prompt "Find me valet parking near Austin, Texas" in three clients.
+Three example transcripts capture the canonical first prompt "Find me valet parking near Austin, Texas" in three clients. Screenshots will land with the Phase 11 asset kit (target 2026-07).
 
-![Claude Desktop transcript](./.github/transcripts/claude-desktop.png)
+### Claude Desktop
 
-![Cursor transcript](./.github/transcripts/cursor.png)
+_Transcript screenshot will land with the Phase 11 asset kit (target 2026-07)._
 
-![ChatGPT transcript](./.github/transcripts/chatgpt.png)
+### Cursor
 
-Each transcript shows the prompt, the agent's tool call (`valet_find_nearest_operators` or `valet_search_cities` then `valet_find_operators_in_city`), and the readable result for the user.
+_Transcript screenshot will land with the Phase 11 asset kit (target 2026-07)._
+
+### ChatGPT
+
+_Transcript screenshot will land with the Phase 11 asset kit (target 2026-07)._
+
+Each transcript will show the prompt, the agent's tool call (`valet_find_nearest_operators` or `valet_search_cities` then `valet_find_operators_in_city`), and the readable result for the user.
 
 ## Data freshness
 
