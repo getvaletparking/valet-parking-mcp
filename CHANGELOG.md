@@ -23,5 +23,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `/.well-known/mcp/server-card.json` served from `https://api.getvaletparking.com`
 - MIT LICENSE
 
-[Unreleased]: https://github.com/redpath1/valet-parking-mcp/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/redpath1/valet-parking-mcp/releases/tag/v0.1.0
+[Unreleased]: https://github.com/getvaletparking/valet-parking-mcp/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/getvaletparking/valet-parking-mcp/releases/tag/v0.1.0
