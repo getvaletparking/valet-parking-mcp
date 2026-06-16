@@ -1,0 +1,191 @@
+{
+  "name": "valet_find_operators_near",
+  "title": "Find Operators Near",
+  "description": "Find valet operators within a given radius of a coordinate, ranked premium tier first then distance. Use this when you have a coordinate and an event-context radius (5mi single venue, 25mi metro, 50mi regional). radius_miles is required; empty array if no matches.",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "lat": {
+        "type": "number",
+        "minimum": -90,
+        "maximum": 90,
+        "description": "Latitude in decimal degrees (WGS84). Range: -90 to 90."
+      },
+      "lng": {
+        "type": "number",
+        "minimum": -180,
+        "maximum": 180,
+        "description": "Longitude in decimal degrees (WGS84). Range: -180 to 180."
+      },
+      "radius_miles": {
+        "type": "number",
+        "minimum": 0.1,
+        "maximum": 500,
+        "description": "Search radius in miles. REQUIRED, no default. Pick based on context: 5 mi for a single venue, 25 mi for a metro, 50 mi for a regional sweep."
+      },
+      "service": {
+        "type": "string",
+        "enum": [
+          "wedding-valet",
+          "corporate-event-valet",
+          "private-event-valet",
+          "funeral-valet",
+          "hotel-resort-valet",
+          "restaurant-valet",
+          "hospital-medical-valet",
+          "major-venue-valet",
+          "general-valet"
+        ],
+        "description": "Optional service narrowing. One of the 9 canonical valet service slugs. Omit to list every operator within radius regardless of services offered."
+      },
+      "limit": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 50,
+        "default": 10,
+        "description": "Max results to return; default 10, capped at 50"
+      }
+    },
+    "required": [
+      "lat",
+      "lng",
+      "radius_miles"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+  },
+  "outputSchema": {
+    "type": "object",
+    "properties": {
+      "operators": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Operator business name"
+            },
+            "slug": {
+              "type": "string",
+              "description": "Canonical kebab-case operator slug; pass to valet_get_operator for details"
+            },
+            "primary_city_name": {
+              "type": "string",
+              "description": "Display name of operator HQ city"
+            },
+            "primary_state_name": {
+              "type": "string",
+              "description": "Display name of operator HQ state"
+            },
+            "primary_city_slug": {
+              "type": "string",
+              "description": "Canonical kebab-case HQ city slug"
+            },
+            "primary_state_slug": {
+              "type": "string",
+              "description": "Canonical kebab-case HQ state slug"
+            },
+            "services": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Canonical service slugs this operator offers"
+            },
+            "phone": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "Operator phone number, null if not on file"
+            },
+            "tier": {
+              "type": "string",
+              "description": "Operator tier: 'free', 'paid', or 'premium'"
+            },
+            "description_text": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "Plain-text summary; null if not on file"
+            },
+            "distance_miles": {
+              "type": "number",
+              "description": "Distance from the input coordinate to operator HQ, rounded to 1 decimal"
+            }
+          },
+          "required": [
+            "name",
+            "slug",
+            "primary_city_name",
+            "primary_state_name",
+            "primary_city_slug",
+            "primary_state_slug",
+            "services",
+            "phone",
+            "tier",
+            "description_text",
+            "distance_miles"
+          ],
+          "additionalProperties": false
+        },
+        "description": "Operators within radius_miles of the input coordinate, ranked tier:desc then distance:asc. Empty array means no matches within radius."
+      },
+      "data_freshness": {
+        "type": "object",
+        "properties": {
+          "indexed_at": {
+            "type": "string",
+            "description": "ISO timestamp of the freshest row in the batch"
+          },
+          "source": {
+            "type": "string",
+            "description": "Origin tag: typesense:operators or typesense:operators:empty"
+          }
+        },
+        "required": [
+          "indexed_at",
+          "source"
+        ],
+        "additionalProperties": false,
+        "description": "TOOL-10 freshness stamp"
+      },
+      "_meta": {
+        "type": "object",
+        "properties": {
+          "terms": {
+            "type": "string",
+            "format": "uri"
+          },
+          "attribution": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "terms",
+          "attribution"
+        ],
+        "additionalProperties": false,
+        "description": "TOOL-11 ToS and attribution block"
+      }
+    },
+    "required": [
+      "operators",
+      "data_freshness",
+      "_meta"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+  },
+  "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+  },
+  "execution": {
+    "taskSupport": "forbidden"
+  }
+}

@@ -1,0 +1,128 @@
+{
+  "name": "valet_search_cities",
+  "title": "Search Cities",
+  "description": "Search the cities directory by name prefix with population-ranked results. Use this when an agent needs to resolve a partial city name into a canonical city slug plus state slug plus lat/lng before composing valet_find_operators_in_city or valet_find_operators_near. Empty array if no matches.",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "query": {
+        "type": "string",
+        "minLength": 2,
+        "description": "Partial or full city name (>=2 chars). Matched against name and lowercase name fields with prefix semantics."
+      },
+      "limit": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 25,
+        "default": 8,
+        "description": "Max results to return; default 8, capped at 25"
+      }
+    },
+    "required": [
+      "query"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+  },
+  "outputSchema": {
+    "type": "object",
+    "properties": {
+      "cities": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "slug": {
+              "type": "string",
+              "description": "Canonical kebab-case city slug (URL-safe)"
+            },
+            "state_slug": {
+              "type": "string",
+              "description": "Canonical kebab-case state slug (e.g. texas, new-york)"
+            },
+            "lat": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "description": "City centroid latitude; null if unset in the index"
+            },
+            "lng": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "description": "City centroid longitude; null if unset in the index"
+            },
+            "population": {
+              "type": "number",
+              "description": "Census population estimate; used as the sort tiebreaker"
+            }
+          },
+          "required": [
+            "slug",
+            "state_slug",
+            "lat",
+            "lng",
+            "population"
+          ],
+          "additionalProperties": false
+        },
+        "description": "Cities matching the query, ranked by text match then population desc"
+      },
+      "data_freshness": {
+        "type": "object",
+        "properties": {
+          "indexed_at": {
+            "type": "string",
+            "description": "Date the cities collection was last fully reindexed"
+          },
+          "source": {
+            "type": "string",
+            "description": "Origin of the data; for this tool: typesense:cities"
+          }
+        },
+        "required": [
+          "indexed_at",
+          "source"
+        ],
+        "additionalProperties": false,
+        "description": "TOOL-10 freshness stamp"
+      },
+      "_meta": {
+        "type": "object",
+        "properties": {
+          "terms": {
+            "type": "string",
+            "format": "uri"
+          },
+          "attribution": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "terms",
+          "attribution"
+        ],
+        "additionalProperties": false,
+        "description": "TOOL-11 ToS and attribution block"
+      }
+    },
+    "required": [
+      "cities",
+      "data_freshness",
+      "_meta"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+  },
+  "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+  },
+  "execution": {
+    "taskSupport": "forbidden"
+  }
+}

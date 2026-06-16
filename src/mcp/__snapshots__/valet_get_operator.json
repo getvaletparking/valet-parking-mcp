@@ -1,0 +1,254 @@
+{
+  "name": "valet_get_operator",
+  "title": "Get Operator Profile",
+  "description": "Get the full operator profile by slug including address, phone, website, services, venues_served, FAQs, and tipping note. Use this when an agent has a slug from a search tool or directory URL and needs the complete profile to rank or present. Returns isError on slug 404 or upstream outage.",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "slug": {
+        "type": "string",
+        "minLength": 1,
+        "description": "Canonical kebab-case operator slug (e.g. '12-oaks-parking-llc'). Lowercase letters, digits, hyphens only."
+      }
+    },
+    "required": [
+      "slug"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+  },
+  "outputSchema": {
+    "type": "object",
+    "properties": {
+      "operator": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Payload UUID; matches Typesense document id"
+          },
+          "name": {
+            "type": "string",
+            "description": "Operator business name"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Canonical kebab-case slug; matches the input"
+          },
+          "primary_city_name": {
+            "type": "string",
+            "description": "HQ proxy city display name"
+          },
+          "primary_state_name": {
+            "type": "string",
+            "description": "HQ proxy state display name"
+          },
+          "primary_city_slug": {
+            "type": "string",
+            "description": "HQ proxy city slug (URL-safe)"
+          },
+          "primary_state_slug": {
+            "type": "string",
+            "description": "HQ proxy state slug (URL-safe)"
+          },
+          "service_area_city_slugs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "All city slugs this operator serves"
+          },
+          "service_area_count": {
+            "type": "number",
+            "description": "Count of service-area cities"
+          },
+          "services": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Canonical service slugs from valet_list_services taxonomy"
+          },
+          "tier": {
+            "type": "string",
+            "description": "Subscription tier: free | paid | custom"
+          },
+          "verified": {
+            "type": "boolean",
+            "description": "Manual verification status"
+          },
+          "claimed": {
+            "type": "boolean",
+            "description": "Operator-claim status"
+          },
+          "phone": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "E.164 phone number; null if none"
+          },
+          "description_text": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Plaintext description; null if none. Lexical AST not exposed."
+          },
+          "photo_url": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Profile photo URL; null if none"
+          },
+          "address": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Full street address; null if none"
+          },
+          "website": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Operator website URL with ?ref=mcp UTM stamp (TOOL-12); null if none"
+          },
+          "venues_served": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "venue": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "venue"
+              ],
+              "additionalProperties": false
+            },
+            "description": "Venues this operator regularly serves"
+          },
+          "faqs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "question": {
+                  "type": "string"
+                },
+                "answer": {
+                  "type": "string"
+                },
+                "source": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "question",
+                "answer"
+              ],
+              "additionalProperties": false
+            },
+            "description": "Structured FAQs; tipping guidance lives here as one entry"
+          },
+          "buyer_question_phrasings": {
+            "anyOf": [
+              {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "LLM-seeded phrasings of buyer-checklist questions"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "slug",
+          "primary_city_name",
+          "primary_state_name",
+          "primary_city_slug",
+          "primary_state_slug",
+          "service_area_city_slugs",
+          "service_area_count",
+          "services",
+          "tier",
+          "verified",
+          "claimed",
+          "phone",
+          "description_text",
+          "photo_url",
+          "address",
+          "website",
+          "venues_served",
+          "faqs",
+          "buyer_question_phrasings"
+        ],
+        "additionalProperties": false,
+        "description": "The full merged operator profile (Typesense + Payload long-tail fields)"
+      },
+      "data_freshness": {
+        "type": "object",
+        "properties": {
+          "indexed_at": {
+            "type": "string",
+            "description": "ISO datetime of the Typesense indexed_at stamp"
+          },
+          "source": {
+            "type": "string",
+            "description": "Origin of the data; for this tool: typesense:operators"
+          }
+        },
+        "required": [
+          "indexed_at",
+          "source"
+        ],
+        "additionalProperties": false,
+        "description": "TOOL-10 freshness stamp"
+      },
+      "_meta": {
+        "type": "object",
+        "properties": {
+          "terms": {
+            "type": "string",
+            "format": "uri"
+          },
+          "attribution": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "terms",
+          "attribution"
+        ],
+        "additionalProperties": false,
+        "description": "TOOL-11 ToS and attribution block"
+      }
+    },
+    "required": [
+      "operator",
+      "data_freshness",
+      "_meta"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+  },
+  "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+  },
+  "execution": {
+    "taskSupport": "forbidden"
+  }
+}

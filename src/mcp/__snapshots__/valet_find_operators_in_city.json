@@ -1,0 +1,177 @@
+{
+  "name": "valet_find_operators_in_city",
+  "title": "Find Operators In City",
+  "description": "List valet operators serving a city slug plus state slug, optionally narrowed by service. Use this when an agent has a city already disambiguated and wants its operator roster ranked premium tier first then name. Empty array if no listed operators.",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "state_slug": {
+        "type": "string",
+        "minLength": 1,
+        "description": "Lowercase kebab-case US state slug (e.g. 'tx', 'new-york')"
+      },
+      "city_slug": {
+        "type": "string",
+        "minLength": 1,
+        "description": "Lowercase kebab-case city slug (e.g. 'houston', 'san-francisco')"
+      },
+      "service": {
+        "type": "string",
+        "enum": [
+          "wedding-valet",
+          "corporate-event-valet",
+          "private-event-valet",
+          "funeral-valet",
+          "hotel-resort-valet",
+          "restaurant-valet",
+          "hospital-medical-valet",
+          "major-venue-valet",
+          "general-valet"
+        ],
+        "description": "Optional service narrowing. One of the 9 canonical valet service slugs. Omit to list every operator serving the city."
+      },
+      "limit": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 50,
+        "default": 10,
+        "description": "Max results to return; default 10, capped at 50"
+      }
+    },
+    "required": [
+      "state_slug",
+      "city_slug"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+  },
+  "outputSchema": {
+    "type": "object",
+    "properties": {
+      "operators": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Operator business name"
+            },
+            "slug": {
+              "type": "string",
+              "description": "Canonical kebab-case operator slug; pass to valet_get_operator for details"
+            },
+            "primary_city_name": {
+              "type": "string",
+              "description": "Display name of operator HQ city"
+            },
+            "primary_state_name": {
+              "type": "string",
+              "description": "Display name of operator HQ state"
+            },
+            "primary_city_slug": {
+              "type": "string",
+              "description": "Canonical kebab-case HQ city slug"
+            },
+            "primary_state_slug": {
+              "type": "string",
+              "description": "Canonical kebab-case HQ state slug"
+            },
+            "services": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Canonical service slugs this operator offers"
+            },
+            "phone": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "Operator phone number, null if not on file"
+            },
+            "tier": {
+              "type": "string",
+              "description": "Operator tier: 'free', 'paid', or 'premium'"
+            },
+            "description_text": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "Plain-text summary; null if not on file"
+            }
+          },
+          "required": [
+            "name",
+            "slug",
+            "primary_city_name",
+            "primary_state_name",
+            "primary_city_slug",
+            "primary_state_slug",
+            "services",
+            "phone",
+            "tier",
+            "description_text"
+          ],
+          "additionalProperties": false
+        },
+        "description": "Operators serving the city, ranked tier:desc then name:asc. Empty array means no matches."
+      },
+      "data_freshness": {
+        "type": "object",
+        "properties": {
+          "indexed_at": {
+            "type": "string",
+            "description": "ISO timestamp of the freshest row in the batch"
+          },
+          "source": {
+            "type": "string",
+            "description": "Origin tag: typesense:operators or typesense:operators:empty"
+          }
+        },
+        "required": [
+          "indexed_at",
+          "source"
+        ],
+        "additionalProperties": false,
+        "description": "TOOL-10 freshness stamp"
+      },
+      "_meta": {
+        "type": "object",
+        "properties": {
+          "terms": {
+            "type": "string",
+            "format": "uri"
+          },
+          "attribution": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "terms",
+          "attribution"
+        ],
+        "additionalProperties": false,
+        "description": "TOOL-11 ToS and attribution block"
+      }
+    },
+    "required": [
+      "operators",
+      "data_freshness",
+      "_meta"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+  },
+  "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+  },
+  "execution": {
+    "taskSupport": "forbidden"
+  }
+}

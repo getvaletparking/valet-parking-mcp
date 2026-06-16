@@ -1,0 +1,95 @@
+{
+  "name": "valet_list_services",
+  "title": "List Valet Services",
+  "description": "List the 9 canonical valet service slugs with display name and category. Use this when an agent needs to validate or discover the supported service taxonomy before composing a follow-up search (e.g. valet_search_by_service_and_city). Returns the in-bundle catalog; no upstream call; no isError path.",
+  "inputSchema": {
+    "type": "object",
+    "properties": {},
+    "$schema": "http://json-schema.org/draft-07/schema#"
+  },
+  "outputSchema": {
+    "type": "object",
+    "properties": {
+      "services": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "slug": {
+              "type": "string",
+              "description": "Canonical kebab-case service slug (e.g. wedding-valet)"
+            },
+            "displayName": {
+              "type": "string",
+              "description": "Human-readable service name"
+            },
+            "category": {
+              "type": "string",
+              "description": "Broad grouping: event, corporate, hospitality, medical, venue, or general"
+            }
+          },
+          "required": [
+            "slug",
+            "displayName",
+            "category"
+          ],
+          "additionalProperties": false
+        },
+        "description": "The 9 canonical valet service types, in catalog order"
+      },
+      "data_freshness": {
+        "type": "object",
+        "properties": {
+          "indexed_at": {
+            "type": "string",
+            "description": "YYYY-MM-DD when this catalog was last updated"
+          },
+          "source": {
+            "type": "string",
+            "description": "Origin of the data, sourced from the in-bundle catalog"
+          }
+        },
+        "required": [
+          "indexed_at",
+          "source"
+        ],
+        "additionalProperties": false,
+        "description": "TOOL-10 freshness stamp"
+      },
+      "_meta": {
+        "type": "object",
+        "properties": {
+          "terms": {
+            "type": "string",
+            "format": "uri"
+          },
+          "attribution": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "terms",
+          "attribution"
+        ],
+        "additionalProperties": false,
+        "description": "TOOL-11 ToS and attribution block"
+      }
+    },
+    "required": [
+      "services",
+      "data_freshness",
+      "_meta"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+  },
+  "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+  },
+  "execution": {
+    "taskSupport": "forbidden"
+  }
+}
