@@ -1,0 +1,16 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "com.getvaletparking/valet-parking-directory",
+  "description": "Public read-only MCP server backed by GetValetParking.com directory of 789 US valet parking operators across 31,186 cities. Discover operators by coordinates or city slug, filter by 9 service types, and fetch full operator profiles. No auth required; rate-limited per IP and session.",
+  "version": "0.1.0",
+  "repository": {
+    "url": "https://github.com/getvaletparking/valet-parking-mcp",
+    "source": "github"
+  },
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://api.getvaletparking.com/mcp"
+    }
+  ]
+}
