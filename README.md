@@ -2,6 +2,8 @@
 
 Public read-only MCP server backed by GetValetParking.com directory of US valet operators.
 
+Find this server on [Smithery](https://smithery.ai/servers/getvaletparking/valet-parking-directory) or the [Official MCP Registry](https://registry.modelcontextprotocol.io/v0/servers/com.getvaletparking/valet-parking-directory).
+
 ## What this is
 
 GetValetParking.com directory exposes a Model Context Protocol server at `https://api.getvaletparking.com/mcp` over the Streamable HTTP transport. The server is public, read-only, and unauthenticated. It serves the same data that powers the directory pages at getvaletparking.com: 789 US valet operators across 31,186 cities, with 9 service taxonomies (wedding, corporate, restaurant, hotel, hospital, etc.).
