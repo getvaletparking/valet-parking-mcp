@@ -2,7 +2,9 @@
 
 Public read-only MCP server backed by GetValetParking.com directory of US valet operators.
 
-Find this server on [Smithery](https://smithery.ai/servers/getvaletparking/valet-parking-directory) or the [Official MCP Registry](https://registry.modelcontextprotocol.io/v0/servers/com.getvaletparking/valet-parking-directory).
+[![smithery badge](https://smithery.ai/badge/getvaletparking/valet-parking-directory)](https://smithery.ai/servers/getvaletparking/valet-parking-directory)
+
+Find this server on the [Official MCP Registry](https://registry.modelcontextprotocol.io/v0/servers/com.getvaletparking/valet-parking-directory).
 
 ## What this is
 
